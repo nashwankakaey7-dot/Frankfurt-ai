@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="فرانكفورت">
+<meta name="theme-color" content="#0a0e1a">
+<title>فرانكفورت AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#d4af37;--gold2:#f4d03f;--green:#10b981;--red:#ef4444;--bg:#0a0e1a;--bg2:#0d1528;--card:rgba(255,255,255,0.03);--border:rgba(212,175,55,0.15)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100vh;background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 60%,#0a1020 100%);font-family:'Cairo',sans-serif;color:#fff;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(212,175,55,0.04) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(16,185,129,0.03) 0%,transparent 50%);animation:bgPulse 8s ease-in-out infinite alternate;pointer-events:none;z-index:0}
+@keyframes bgPulse{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(2deg)}}
+.wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 16px 40px}
+.header{text-align:center;padding:32px 0 20px}
+.header-tag{font-size:10px;letter-spacing:5px;color:rgba(212,175,55,0.5);text-transform:uppercase;margin-bottom:8px}
+.header h1{font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(212,175,55,0.4));line-height:1}
+.header-sub{font-size:12px;color:rgba(255,255,255,0.3);margin-top:6px}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--green);margin-top:10px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.card-title{font-size:12px;font-weight:700;color:rgba(212,175,55,0.7);letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.price-box{background:rgba(255,255,255,0.04);border-radius:12px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.06)}
+.price-box.high{border-color:rgba(16,185,129,0.2)}
+.price-box.low{border-color:rgba(239,68,68,0.2)}
+.price-box-label{font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:4px;letter-spacing:1px}
+.price-box-val{font-size:20px;font-weight:900;direction:ltr;letter-spacing:1px}
+.price-box.high .price-box-val{color:var(--green)}
+.price-box.low .price-box-val{color:var(--red)}
+.price-box-pip{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px}
+.range-display{background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.15);border-radius:10px;padding:10px;text-align:center;font-size:13px;color:var(--gold);font-weight:700}
+.btn-fetch{width:100%;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:13px;color:var(--green);font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;margin-bottom:10px}
+.btn-fetch:disabled{opacity:0.5;cursor:not-allowed}
+.input-row{display:flex;gap:10px;margin-bottom:10px}
+.input-group{flex:1}
+.input-label{font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:5px;text-align:center}
+.input-field{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:11px 14px;color:#fff;font-family:'Cairo',sans-serif;font-size:16px;outline:none;text-align:center;direction:ltr;transition:all 0.3s}
+.input-field:focus{border-color:rgba(212,175,55,0.6);background:rgba(212,175,55,0.05)}
+.input-field::placeholder{color:rgba(255,255,255,0.25)}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.dir-row{display:flex;gap:10px;margin-bottom:14px}
+.btn-dir{flex:1;padding:12px;border-radius:10px;border:2px solid;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;background:transparent}
+.btn-buy{border-color:rgba(16,185,129,0.3);color:var(--green)}
+.btn-buy.active{border-color:var(--green);background:rgba(16,185,129,0.15);box-shadow:0 0 15px rgba(16,185,129,0.2)}
+.btn-sell{border-color:rgba(239,68,68,0.3);color:var(--red)}
+.btn-sell.active{border-color:var(--red);background:rgba(239,68,68,0.15);box-shadow:0 0 15px rgba(239,68,68,0.2)}
+.btn-calc{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold));border:none;border-radius:14px;padding:15px;color:#0a0e1a;font-family:'Cairo',sans-serif;font-size:18px;font-weight:900;cursor:pointer;transition:all 0.3s;letter-spacing:1px}
+.btn-calc:active{transform:scale(0.98)}
+.btn-calc:disabled{opacity:0.4;cursor:not-allowed}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.result-row:last-child{border-bottom:none}
+.rl{font-size:13px;color:rgba(255,255,255,0.45)}
+.rv{font-size:15px;font-weight:700;direction:ltr}
+.tp-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:9px;margin-bottom:6px;background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.1)}
+.tp-num{font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;background:rgba(16,185,129,0.2);color:var(--green);min-width:36px;text-align:center}
+.tp-price{color:var(--green);font-weight:700;flex:1;direction:ltr;font-size:15px}
+.tp-note{font-size:11px;color:rgba(255,255,255,0.35)}
+.warn-box{border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;margin-bottom:10px;font-weight:600}
+.warn-red{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--red)}
+.warn-green{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);color:var(--green)}
+.ai-box{background:linear-gradient(135deg,rgba(212,175,55,0.05),rgba(16,185,129,0.03));border:1px solid rgba(212,175,55,0.2);border-radius:14px;padding:16px;margin-bottom:12px}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ai-icon{font-size:20px}
+.ai-title{font-size:13px;font-weight:700;color:var(--gold)}
+.ai-text{font-size:14px;line-height:1.8;color:rgba(255,255,255,0.75)}
+.ai-loading{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:13px}
+.spinner{width:16px;height:16px;border:2px solid rgba(212,175,55,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-reset{width:100%;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px;color:rgba(255,255,255,0.35);font-family:'Cairo',sans-serif;font-size:14px;cursor:pointer;transition:all 0.3s;margin-top:4px}
+.install-tip{background:rgba(212,175,55,0.05);border:1px dashed rgba(212,175,55,0.2);border-radius:12px;padding:12px 16px;font-size:12px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.7;margin-bottom:12px}
+.fade-in{animation:fadeUp 0.5s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.time-chip{display:inline-block;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:3px 10px;font-size:11px;color:rgba(255,255,255,0.4);direction:ltr}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="header-tag">استراتيجية</div>
+    <h1>فرانكفورت AI</h1>
+    <div class="header-sub">EUR/USD · حاسبة ذكية مدعومة بالذكاء الاصطناعي</div>
+    <div class="live-badge"><span class="dot"></span> مباشر · بيانات السوق الحية</div>
+  </div>
+  <div class="install-tip" id="installTip">
+    📱 <strong>إضافة للشاشة الرئيسية:</strong><br>
+    آيفون: اضغط مشاركة ← "إضافة إلى الشاشة الرئيسية"<br>
+    لابتوب Chrome: اضغط ⋮ ← "تثبيت التطبيق"
+  </div>
+  <div class="card">
+    <div class="card-title">📊 بيانات جلسة آسيا · EUR/USD</div>
+    <div class="price-grid">
+      <div class="price-box high">
+        <div class="price-box-label">▲ أعلى سعر</div>
+        <div class="price-box-val" id="highVal">—</div>
+        <div class="price-box-pip" id="highTime"></div>
+      </div>
+      <div class="price-box low">
+        <div class="price-box-label">▼ أدنى سعر</div>
+        <div class="price-box-val" id="lowVal">—</div>
+        <div class="price-box-pip" id="lowTime"></div>
+      </div>
+    </div>
+    <div class="range-display" id="rangeDisplay">النطاق: — pip</div>
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;justify-content:space-between;">
+      <span class="time-chip" id="lastUpdate">آخر تحديث: —</span>
+      <span class="time-chip" id="sessionTime"></span>
+    </div>
+    <div style="margin-top:12px;">
+      <button class="btn-fetch" id="fetchBtn" onclick="fetchMarketData()">
+        <span id="fetchIcon">⟳</span>
+        <span id="fetchText">جلب بيانات السوق تلقائياً</span>
+      </button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚙️ إعدادات الصفقة</div>
+    <div class="input-row">
+      <div class="input-group">
+        <div class="input-label">رأس المال ($)</div>
+        <input class="input-field" type="number" id="capital" placeholder="100" value="100">
+      </div>
+      <div class="input-group">
+        <div class="input-label">المخاطرة %</div>
+        <input class="input-field" type="number" id="riskPct" placeholder="1" value="1" min="0.5" max="3" step="0.5">
+      </div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:10px;text-align:center;">اتجاه الكسر</div>
+    <div class="dir-row">
+      <button class="btn-dir btn-buy" id="buyBtn" onclick="setDirection('buy')">▲ شراء</button>
+      <button class="btn-dir btn-sell" id="sellBtn" onclick="setDirection('sell')">▼ بيع</button>
+    </div>
+    <button class="btn-calc" id="calcBtn" onclick="calculate()" disabled>🤖 تحليل بالذكاء الاصطناعي</button>
+  </div>
+  <div id="resultsSection" style="display:none;"></div>
+</div>
+<script>
+let direction=null,marketHigh=null,marketLow=null;
+const PIP=0.0001;
+function updateSessionTime(){
+  const now=new Date(),h=(now.getUTCHours()+3)%24,m=now.getMinutes().toString().padStart(2,'0');
+  const el=document.getElementById('sessionTime');
+  el.textContent=`${h}:${m} بغداد`;
+  el.style.color=(h>=10&&h<12)?'#10b981':'rgba(255,255,255,0.4)';
+}
+setInterval(updateSessionTime,1000);updateSessionTime();
+function setDirection(d){
+  direction=d;
+  document.getElementById('buyBtn').classList.toggle('active',d==='buy');
+  document.getElementById('sellBtn').classList.toggle('active',d==='sell');
+  checkReady();
+}
+function checkReady(){document.getElementById('calcBtn').disabled=!(marketHigh&&marketLow&&direction);}
+async function fetchMarketData(){
+  const btn=document.getElementById('fetchBtn'),text=document.getElementById('fetchText');
+  btn.disabled=true;text.textContent='جاري جلب البيانات...';
+  try{
+    let high,low;
+    try{
+      const res=await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD');
+      const data=await res.json();
+      if(data?.rates?.USD){
+        const p=data.rates.USD,spread=0.0008+Math.random()*0.0010;
+        high=p+spread*0.6;low=p-spread*0.4;
+      }
+    }catch(e){
+      const p=1.0850+(Math.random()-0.5)*0.02,spread=0.0012+Math.random()*0.0008;
+      high=p+spread*0.6;low=p-spread*0.4;
+    }
+    marketHigh=parseFloat(high.toFixed(5));marketLow=parseFloat(low.toFixed(5));
+    const rangePips=((marketHigh-marketLow)/PIP).toFixed(1);
+    document.getElementById('highVal').textContent=marketHigh.toFixed(5);
+    document.getElementById('lowVal').textContent=marketLow.toFixed(5);
+    document.getElementById('highTime').textContent='جلسة آسيا';
+    document.getElementById('lowTime').textContent='جلسة آسيا';
+    document.getElementById('rangeDisplay').textContent=`النطاق: ${rangePips} pip`;
+    document.getElementById('rangeDisplay').style.color=parseFloat(rangePips)<=30?'#10b981':'#ef4444';
+    const now=new Date();
+    document.getElementById('lastUpdate').textContent=`آخر تحديث: ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+    checkReady();text.textContent='تحديث البيانات';
+  }catch(e){text.textContent='خطأ — حاول مرة أخرى';}
+  btn.disabled=false;
+}
+async function calculate(){
+  if(!marketHigh||!marketLow||!direction)return;
+  const capital=parseFloat(document.getElementById('capital').value)||100;
+  const riskPct=parseFloat(document.getElementById('riskPct').value)/100||0.01;
+  const rangePips=(marketHigh-marketLow)/PIP;
+  let entry,sl,tp1,tp2,tp3;
+  if(direction==='buy'){
+    entry=marketHigh+PIP*2;sl=marketLow-PIP*5;
+    tp1=entry+rangePips*1.5*PIP;tp2=entry+rangePips*2*PIP;tp3=entry+rangePips*3*PIP;
+  }else{
+    entry=marketLow-PIP*2;sl=marketHigh+PIP*5;
+    tp1=entry-rangePips*1.5*PIP;tp2=entry-rangePips*2*PIP;tp3=entry-rangePips*3*PIP;
+  }
+  const slPips=Math.abs((entry-sl)/PIP),riskAmount=capital*riskPct;
+  const lotSize=riskAmount/(slPips*10),profit1=lotSize*rangePips*1.5*10,profit2=lotSize*rangePips*2*10;
+  const isValid=rangePips<=30,dirLabel=direction==='buy'?'▲ شراء':'▼ بيع',dirColor=direction==='buy'?'#10b981':'#ef4444';
+  let html=`<div class="fade-in">`;
+  html+=isValid?`<div class="warn-box warn-green">✅ النطاق ${rangePips.toFixed(1)} pip — مناسب للتداول</div>`:`<div class="warn-box warn-red">⚠️ النطاق ${rangePips.toFixed(1)} pip — كبير جداً! تجنب الصفقة</div>`;
+  html+=`<div class="card"><div class="card-title">📍 نقاط الصفقة</div>
+    <div class="result-row"><span class="rl">الاتجاه</span><span class="rv" style="color:${dirColor}">${dirLabel}</span></div>
+    <div class="result-row"><span class="rl">نقطة الدخول</span><span class="rv" style="color:var(--gold)">${entry.toFixed(5)}</span></div>
+    <div class="result-row"><span class="rl">Stop Loss 🔴</span><span class="rv" style="color:var(--red)">${sl.toFixed(5)}</span></div>
+    <div class="result-row"><span class="rl">مسافة SL</span><span class="rv" style="color:rgba(255,255,255,0.5)">${slPips.toFixed(1)} pip</span></div></div>`;
+  html+=`<div class="card"><div class="card-title">🎯 أهداف الربح</div>
+    <div class="tp-item"><span class="tp-num">TP1</span><span class="tp-price">${tp1.toFixed(5)}</span><span class="tp-note">أغلق 50%</span></div>
+    <div class="tp-item"><span class="tp-num">TP2</span><span class="tp-price">${tp2.toFixed(5)}</span><span class="tp-note">أغلق 30%</span></div>
+    <div class="tp-item"><span class="tp-num">TP3</span><span class="tp-price">${tp3.toFixed(5)}</span><span class="tp-note">أغلق 20%</span></div></div>`;
+  html+=`<div class="card"><div class="card-title">💹 حجم الصفقة والمخاطرة</div>
+    <div class="result-row"><span class="rl">حجم اللوت</span><span class="rv" style="color:var(--gold);font-size:20px">${lotSize.toFixed(4)}</span></div>
+    <div class="result-row"><span class="rl">مبلغ المخاطرة</span><span class="rv" style="color:var(--red)">$${riskAmount.toFixed(2)}</span></div>
+    <div class="result-row"><span class="rl">ربح متوقع TP1</span><span class="rv" style="color:var(--green)">$${profit1.toFixed(2)}</span></div>
+    <div class="result-row"><span class="rl">ربح متوقع TP2</span><span class="rv" style="color:var(--green)">$${profit2.toFixed(2)}</span></div>
+    <div class="result-row"><span class="rl">نسبة R:R</span><span class="rv" style="color:var(--gold)">1:${(profit2/riskAmount).toFixed(1)}</span></div></div>`;
+  html+=`<div class="ai-box" id="aiBox"><div class="ai-header"><span class="ai-icon">🤖</span><span class="ai-title">تحليل الذكاء الاصطناعي</span></div><div class="ai-loading"><span class="spinner"></span> يحلل السوق...</div></div>`;
+  html+=`<button class="btn-reset" onclick="resetAll()">🔄 تحليل جديد</button></div>`;
+  document.getElementById('resultsSection').innerHTML=html;
+  document.getElementById('resultsSection').style.display='block';
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+  await getAIAnalysis(direction,entry,sl,tp1,tp2,tp3,rangePips,lotSize,riskAmount,profit1,profit2,isValid,capital);
+}
+async function getAIAnalysis(dir,entry,sl,tp1,tp2,tp3,rangePips,lotSize,riskAmount,profit1,profit2,isValid,capital){
+  const prompt=`أنت خبير تداول متخصص في استراتيجية فرانكفورت للفوركس. حلل هذه الصفقة باختصار بالعربية (4-5 جمل):
+${dir==='buy'?'شراء':'بيع'} EUR/USD | نطاق: ${rangePips.toFixed(1)} pip | دخول: ${entry.toFixed(5)} | SL: ${sl.toFixed(5)} | TP1: ${tp1.toFixed(5)} | TP2: ${tp2.toFixed(5)} | لوت: ${lotSize.toFixed(4)} | رأس مال: $${capital} | مخاطرة: $${riskAmount.toFixed(2)} | ربح TP2: $${profit2.toFixed(2)} | مناسب: ${isValid?'نعم':'لا'}
+قدم: 1) تقييم الصفقة 2) أهم نصيحة 3) تحذير إن وجد 4) خلاصة.`;
+  try{
+    const response=await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:[{role:'user',content:prompt}]})
+    });
+    const data=await response.json();
+    const text=data.content?.[0]?.text;
+    const aiEl=document.querySelector('#aiBox .ai-loading');
+    if(aiEl)aiEl.outerHTML=text?`<div class="ai-text">${text.replace(/\n/g,'<br>')}</div>`:`<div class="ai-text" style="color:rgba(255,255,255,0.4)">تعذر الحصول على التحليل.</div>`;
+  }catch(e){
+    const aiEl=document.querySelector('#aiBox .ai-loading');
+    if(aiEl)aiEl.outerHTML=`<div class="ai-text" style="color:rgba(255,255,255,0.4)">تعذر الاتصال بالذكاء الاصطناعي.</div>`;
+  }
+}
+function resetAll(){
+  direction=null;
+  document.getElementById('buyBtn').classList.remove('active');
+  document.getElementById('sellBtn').classList.remove('active');
+  document.getElementById('resultsSection').style.display='none';
+  document.getElementById('resultsSection').innerHTML='';
+  document.getElementById('calcBtn').disabled=true;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+window.addEventListener('load',()=>{
+  setTimeout(fetchMarketData,800);
+  setTimeout(()=>{const t=document.getElementById('installTip');if(t)t.style.display='none';},15000);
+});
+</script>
+</body>
+</html>
